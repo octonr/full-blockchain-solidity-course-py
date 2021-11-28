@@ -3,6 +3,22 @@ new: 2021-11-28
 title: memo about smart contract
 ---
 
+# Table of Contents
+  - [2021/11/28](#20211128)
+    * [practice](#practice)
+    * [Keywords](#keywords)
+    * [English words](#english-words)
+  - [2021/11/29](#20211129)
+
+
+# 2021/11/29
+## Lesson3
+### Matching ETH/Gwei/wei
+  - I can not understand what is the calculation that he does.
+  - ETH/USD x (10^10) => Gwei
+  - (Gwei x ethAmount)/(10^18) => ??
+    * ethAmount == 10^9wei(== 1Gwei)
+
 # 2021/11/28
 ## Table of Contents
   - [practice](#practice)
