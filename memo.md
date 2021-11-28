@@ -13,9 +13,11 @@ title: memo about smart contract
 
 # 2021/11/29
 ## Lesson3
-### Matching ETH/Gwei/wei
+### Matching ETH/Gwei/wei 2:54:00 ~
   - I can not understand what is the calculation that he does.
-  - ETH/USD x (10^10) => Gwei
+  - ETH/USD x (10^10)
+  - 1eth == 10^9wei == 10^18wei
+  - wei
   - (Gwei x ethAmount)/(10^18) => ??
     * ethAmount == 10^9wei(== 1Gwei)
 
