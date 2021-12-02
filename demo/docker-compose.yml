@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  pynode:
+    build: .
+    container_name: 'pynode'
+    working_dir: '/home/pn/app'
+    volumes:
+      - .:/home/pn/app
+    tty: true
+    stdin_open: true
