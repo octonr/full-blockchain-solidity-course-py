@@ -37,9 +37,9 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 # print(abi)
 
 # for connectiong to ganache
-w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:7545"))
+w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
 chain_id = 1337
-my_address = "0xb5EB319F27c02B204e69DB1F0C0b24ED0d8F3A75"
+my_address = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1"
 # have to add 0x to front
 # you have not to set hard-cord private_key in program
 # so you can use `.env` with `python-dotenv`
