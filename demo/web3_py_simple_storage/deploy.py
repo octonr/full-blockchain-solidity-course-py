@@ -37,9 +37,17 @@ abi = compiled_sol["contracts"]["SimpleStorage.sol"]["SimpleStorage"]["abi"]
 # print(abi)
 
 # for connectiong to ganache
-w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:7545"))
-chain_id = 1337
-my_address = "0xb5EB319F27c02B204e69DB1F0C0b24ED0d8F3A75"
+# w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545")) # ganache address
+w3 = Web3(
+    Web3.HTTPProvider("https://rinkeby.infura.io/v3/220f337b9c16457c98944524a42c41d0")
+)
+# chain_id = 1337
+chain_id = 4  # rinkeby network chainid
+# my_address = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1" # Ganache address
+my_address = (
+    "0xBa602C61F879925af85dcE1Dd844d04A66ce4544"  # METAMASK myAccount Account1 address
+)
+
 # have to add 0x to front
 # you have not to set hard-cord private_key in program
 # so you can use `.env` with `python-dotenv`
@@ -57,7 +65,12 @@ print("nonce: ", nonce)
 # 2. Sign a transaction
 # 3. Send a transaction
 transaction = SimpleStorage.constructor().buildTransaction(
-    {"chainId": chain_id, "from": my_address, "nonce": nonce, "gasPrice":w3.eth.gas_price}
+    {
+        "chainId": chain_id,
+        "from": my_address,
+        "nonce": nonce,
+        "gasPrice": w3.eth.gas_price,
+    }
 )
 # print(transaction)
 signed_txn = w3.eth.account.sign_transaction(transaction, private_key=private_key)
@@ -80,11 +93,16 @@ print("call retrieve(): ", simple_storage.functions.retrieve().call())
 print("call store(15): ", simple_storage.functions.store(15).call())
 
 print("Updating Contract...")
-store_transaction = simple_storage.functions.store(15).buildTransaction({
-    "chainId": chain_id, "from": my_address, "nonce": nonce + 1, "gasPrice": w3.eth.gas_price
-})
+store_transaction = simple_storage.functions.store(15).buildTransaction(
+    {
+        "chainId": chain_id,
+        "from": my_address,
+        "nonce": nonce + 1,
+        "gasPrice": w3.eth.gas_price,
+    }
+)
 signed_store_txn = w3.eth.account.sign_transaction(
-    store_transaction, private_key = private_key
+    store_transaction, private_key=private_key
 )
 send_store_tx = w3.eth.send_raw_transaction(signed_store_txn.rawTransaction)
 tx_receipt = w3.eth.wait_for_transaction_receipt(send_store_tx)
