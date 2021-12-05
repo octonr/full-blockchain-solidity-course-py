@@ -63,7 +63,7 @@ contract FundMe {
         // 1gwei < $50
         require(getConversionRate(msg.value) >= mimimumUSD, "You need to spend more ETH!");
         addressToAmountFunded[msg.sender] += msg.value;
-        // what the ETH -> USD conversion rate
+        funders.push(msg.sender);
     }
 
     function getVersion() public view returns (uint256) {
@@ -89,5 +89,28 @@ contract FundMe {
         return ethAmountInUsd;
         // 4076770000000
         // 0.000004076770000000 Gwei/USD
+    }
+
+    function getEntranceFee() public view returns (uint256) {
+        // mimimumUSD
+        uint256 mimimuUSD = 50 * 10**18;
+        uint256 price = getPrice();
+        uint256 precision = 1 * 10**18;
+        return (mimimuUSD * precision) / price;
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner);
+        _;
+    }
+
+    function withdraw() payable onlyOwner public {
+        msg.sender.transfer(address(this).balance);
+
+        for(uint256 funderIndex=0; funderIndex < funders.length; funderIndex++){
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+        }
+        funders = new address[](0);
     }
 }
