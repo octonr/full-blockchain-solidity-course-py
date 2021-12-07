@@ -11,6 +11,9 @@ networks:
   rinkeby:
     eth_usd_price_feed: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e'
     verify: True
+  mainnet-fork-dev:
+    eth_usd_price_feed: '0xaEA2808407B7319A31A383B6F8B60f04BCa23cE2'
+    verify: False
   development:
     verify: False
   ganache-local:
