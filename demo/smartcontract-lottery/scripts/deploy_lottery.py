@@ -2,6 +2,7 @@ from scripts.helpful_scripts import get_account, get_contract, fund_with_link
 from brownie import Lottery, network, config
 import time
 
+
 def deploy_lottery():
     # account = get_account(id="freecodecamp-account")
     account = get_account()
@@ -12,9 +13,11 @@ def deploy_lottery():
         config["networks"][network.show_active()]["fee"],
         config["networks"][network.show_active()]["keyhash"],
         {"from": account},
-        publish_source=config["networks"][network.show_active()].get("verify", False)
+        publish_source=config["networks"][network.show_active()].get("verify", False),
     )
     print("Deployed lottery!!")
+    return lottery
+
 
 def start_lottery():
     account = get_account()
@@ -23,13 +26,15 @@ def start_lottery():
     starting_tx.wait(1)
     print("The lottery is started!")
 
+
 def enter_lottery():
     account = get_account()
     lottery = Lottery[-1]
     value = lottery.getEntranceFee() + 100000000
-    tx = lottery.enter({"from":account, "value": value})
+    tx = lottery.enter({"from": account, "value": value})
     tx.wait(1)
     print("You entered the lottery")
+
 
 def end_lottery():
     account = get_account()
@@ -42,6 +47,7 @@ def end_lottery():
     ending_transaction.wait(1)
     time.sleep(60)
     print(f"{lottery.recentWinner()} is the new winner!!")
+
 
 def main():
     deploy_lottery()

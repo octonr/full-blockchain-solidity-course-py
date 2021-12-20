@@ -1,11 +1,12 @@
 from brownie import (
     network,
-     accounts,
-     config,
-     interface,
-     MockV3Aggregator,
-     VRFCoordinatorMock,
-     LinkToken
+    accounts,
+    config,
+    interface,
+    MockV3Aggregator,
+    VRFCoordinatorMock,
+    LinkToken,
+    Contract,
 )
 
 FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork", "mainnet-fork-dev"]
@@ -27,11 +28,13 @@ def get_account(index=None, id=None):
         return accounts[0]
     return accounts.add(config["wallets"]["from_key"])
 
+
 contract_to_mock = {
     "eth_usd_price_feed": MockV3Aggregator,
     "vrf_coordinator": VRFCoordinatorMock,
     "link_token": LinkToken,
 }
+
 
 def get_contract(contract_name):
     """This function will grab the contract addresses from the brownie config
@@ -40,7 +43,7 @@ def get_contract(contract_name):
 
         Args:
             contract_name(string)
-        
+
         Returns:
             brownie.network.contract.ProjectContract: The most recently deployed
             version of this contract.
@@ -48,7 +51,7 @@ def get_contract(contract_name):
     contract_type = contract_to_mock[contract_name]
     if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         if len(contract_type) <= 0:
-            #MockV3Aggregator.length
+            # MockV3Aggregator.length
             deploy_mocks()
         contract = contract_type[-1]
         # MockV3Aggregator[-1]
@@ -57,28 +60,32 @@ def get_contract(contract_name):
         # address
         # ABI
         contract = Contract.from_abi(
-            contract_type._name, contract_address, contract_type.api
+            contract_type._name, contract_address, contract_type.abi
         )
         # MockV3AggregatorABI
     return contract
 
+
 DECIMALS = 8
-INITIAL_VALUE = 20000000000
+INITIAL_VALUE = 200000000000
+
 
 def deploy_mocks(decimals=DECIMALS, inital_value=INITIAL_VALUE):
-    account=get_account()
-    MockV3Aggregator.deploy(decimals,inital_value,{"from":account})
-    link_token = LinkToken.deploy({"from":account})
+    account = get_account()
+    MockV3Aggregator.deploy(decimals, inital_value, {"from": account})
+    link_token = LinkToken.deploy({"from": account})
     VRFCoordinatorMock.deploy(link_token.address, {"from": account})
     print("Mock Deployed!")
 
 
-def fund_with_link(contract_address, account=None, link_token=None, amount=100000000000000000):
+def fund_with_link(
+    contract_address, account=None, link_token=None, amount=100000000000000000
+):
     account = account if account else get_account()
     link_token = link_token if link_token else get_contract("link_token")
     # tx = link_token.transfer(contract_address, amount, {"from":account})
     link_token_contract = interface.LinkTokenInterface(link_token.address)
-    tx = link_token_contract.transfer(contract_address, amount, {"from":account})
+    tx = link_token_contract.transfer(contract_address, amount, {"from": account})
     tx.wait(1)
     print("Fund contract!")
     return tx
