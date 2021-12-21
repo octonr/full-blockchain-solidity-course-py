@@ -2,7 +2,6 @@ from scripts.helpful_scripts import get_account, get_contract, fund_with_link
 from brownie import Lottery, network, config
 import time
 
-
 def deploy_lottery():
     # account = get_account(id="freecodecamp-account")
     account = get_account()
